@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	  <meta charset="UTF-8" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	  <title>Assignment Details</title>
+	  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+	  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+	  <style>
+	    * {
+	      margin: 0;
+	      padding: 0;
+	      box-sizing: border-box;
+	    }
+	
+	    body {
+	      font-family: 'Poppins', sans-serif;
+	      background-color: #f5f7fa;
+	      padding-top: 80px;
+	    }
+	
+	    nav {
+	      position: fixed;
+	      top: 0;
+	      left: 0;
+	      width: 100%;
+	      background: linear-gradient(to right, #8e2de2, #4a00e0);
+	      padding: 18px 40px;
+	      display: flex;
+	      justify-content: space-between;
+	      align-items: center;
+	      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	      z-index: 1000;
+	    }
+	
+	    .nav-left {
+	      display: flex;
+	      align-items: center;
+	      gap: 25px;
+	    }
+	
+	    .nav-left a {
+	      color: #fff;
+	      text-decoration: none;
+	      font-weight: 500;
+	      font-size: 15px;
+	      padding: 8px 12px;
+	      border-radius: 6px;
+	      display: flex;
+	      align-items: center;
+	      gap: 6px;
+	      transition: background 0.3s;
+	    }
+	
+	    .nav-left a:hover {
+	      background-color: rgba(255, 255, 255, 0.15);
+	    }
+	
+	    .nav-right {
+	      display: flex;
+	      align-items: center;
+	    }
+	
+	    .profile {
+	      background-color: #fff;
+	      color: #4a00e0;
+	      padding: 10px 18px;
+	      border-radius: 30px;
+	      font-weight: 600;
+	      text-decoration: none;
+	      transition: 0.3s ease;
+	    }
+	
+	    .profile:hover {
+	      background-color: #4a00e0;
+	      color: #fff;
+	    }
+	
+	    .container {
+	      padding: 40px 30px;
+	      max-width: 800px;
+	      margin: auto;
+	    }
+	
+	    .card {
+	      background: #ffffff;
+	      padding: 30px;
+	      border-radius: 15px;
+	      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+	    }
+	
+	    .card h2 {
+	      color: #4a00e0;
+	      margin-bottom: 20px;
+	      font-size: 24px;
+	    }
+	
+	    .detail-row {
+	      margin-bottom: 18px;
+	    }
+	
+	    .detail-label {
+	      font-weight: 600;
+	      color: #333;
+	    }
+	
+	    .detail-value {
+	      margin-top: 4px;
+	      color: #555;
+	    }
+	
+	    .student-list {
+	      margin-top: 10px;
+	      margin-bottom: 25px;
+	      padding-left: 20px;
+	      color: #333;
+	    }
+	
+	    .student-list li {
+	      margin-bottom: 5px;
+	    }
+	
+	    button.remind-btn {
+	      background-color: #ff4747;
+	      color: white;
+	      border: none;
+	      padding: 10px 16px;
+	      border-radius: 6px;
+	      font-weight: 500;
+	      cursor: pointer;
+	    }
+	
+	    hr {
+	      border: none;
+	      border-top: 1px solid #ddd;
+	      margin: 30px 0;
+	    }
+	
+	    @media (max-width: 768px) {
+	      nav {
+	        flex-direction: column;
+	        align-items: flex-start;
+	        padding: 15px 20px;
+	      }
+	
+	      .nav-left {
+	        gap: 15px;
+	        margin-bottom: 10px;
+	        flex-wrap: wrap;
+	      }
+	
+	      .profile {
+	        margin-top: 10px;
+	      }
+	    }
+	  </style>
+	</head>
+	<body>
+	
+	  <nav>
+	    <div class="nav-left">
+	      <a href="/home/teacher_home"><i class="fas fa-home"></i> Dashboard</a>
+	      <a href="/home/teacher_class"><i class="fas fa-users"></i> Manage Class</a>
+	      <a href="/home/assignments/teacher_assignments_details"><i class="fas fa-book"></i> Assignments</a>
+	      <a href="/home/teacher_project"><i class="fas fa-tasks"></i> Projects</a>
+	      <a href="/home/teacher_grade"><i class="fas fa-graduation-cap"></i> Student Grades</a>
+	      <a href="/home/teacher_events"><i class="fas fa-calendar-alt"></i> Events</a>
+	    </div>
+	    <div class="nav-right">
+			<a href="/home/teacher_profile" class="profile">
+			  <i class="fas fa-user-circle"></i> <span th:text="${current_teacher.name}">Teacher</span>
+			</a>
+	    </div>
+	  </nav>
+	   <p th:if="${success}" th:text="${success}" class="text-success" style="color: green; text-align: center;"></p>
+		<p th:if="${error}" th:text="${error}" class="text-danger" style="color: red; text-align: center;"></p>
+	  
+	
+    <div class="container">
+      <div class="card">
+        <h2>Assignment Details</h2>
+    <div th:object="${assignment}">
+        <div class="detail-row">
+          <div class="detail-label">Assignment Name:</div>
+          <div class="detail-value" th:text="${assignment.assignmentName}"></div>
+        </div>
+    
+        <div class="detail-row">
+          <div class="detail-label">Class:</div>
+          <div class="detail-value" th:text="${assignment.className}"></div>
+        </div>
+    
+        <div class="detail-row">
+          <div class="detail-label">End Date:</div>
+          <div class="detail-value" th:text="${assignment.enddate}"></div>
+        </div>
+    
+        <div class="detail-row">
+          <div class="detail-label">Description:</div>
+          <div class="detail-value" th:text="${assignment.assignmentDescription}">
+          </div>
+        </div>
+    
+        <hr />
+    
+        <div class="detail-row" style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="detail-label">Student Submission Status:</div>
+			<a th:href="@{/home/assignments/remind(assignmentId=${assignment.id})}"
+			   style="background-color: #ff4747; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; text-decoration: none; display: inline-block;">
+			  <i class="fas fa-bell"></i> Remind All
+			</a>
+
+
+        </div>
+    
+        <table style="width: 100%; margin-top: 15px; border-collapse: collapse;">
+          <thead>
+            <tr style="background-color: #f0f0ff; color: #4a00e0;">
+              <th style="padding: 10px; text-align: left;">Student Name</th>
+              <th style="padding: 10px; text-align: left;">Status</th>
+            </tr>
+          </thead>
+			<tbody th:each="st : ${st}">
+			  <tr style="border-bottom: 1px solid #eee;">
+			    <td style="padding: 10px;" th:text="${st.studentName}">Student Name</td>
+			    <td style="padding: 10px;">
+			      <div style="display: flex; align-items: center;">
+			        <span th:text="${st.status}"
+			              th:style="${st.status} == 'Submitted' ? 'color: green; font-weight: 500;' : 'color: red; font-weight: 500;'">
+			          Status
+			        </span>
+			
+			        <a th:if="${st.status} == 'Submitted'"
+			           th:href="@{/home/assignments/view_submission(studentId=${st.id}, assignmentId=${assignment.id})}"
+			           style="margin-left: 15px; background-color: #4a00e0; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; text-decoration: none;">
+			          View Submission
+			        </a>
+			      </div>
+			    </td>
+			  </tr>
+			</tbody>
+
+        </table>
+      </div>
+    </div>
+	</body>
+</html>
+

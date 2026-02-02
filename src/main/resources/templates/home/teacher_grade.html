@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Teacher Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f7fa;
+      padding-top: 80px;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(to right, #8e2de2, #4a00e0);
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .nav-left a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.3s;
+    }
+
+    .nav-left a:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .profile {
+      background-color: #fff;
+      color: #4a00e0;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+
+    .profile:hover {
+      background-color: #4a00e0;
+      color: #fff;
+    }
+
+    .container {
+      padding: 40px 30px;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 20px 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+      color: #4a00e0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      font-size: 15px;
+      color: #444;
+    }
+
+    th {
+      background-color: #f0f0ff;
+      color: #4a00e0;
+      font-weight: 600;
+    }
+
+    select, input[type="number"] {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4a00e0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #37209c;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-left">
+      <a href="/home/teacher_home"><i class="fas fa-home"></i> Dashboard</a>
+      <a href="/home/teacher_class"><i class="fas fa-users"></i> Manage Class</a>
+      <a href="/home/assignments/teacher_assignments_details"><i class="fas fa-book"></i> Assignments</a>
+      <a href="/home/teacher_project"><i class="fas fa-tasks"></i> Projects</a>
+      <a href="/home/teacher_grade"><i class="fas fa-graduation-cap"></i> Student Grades</a>
+      <a href="/home/teacher_events"><i class="fas fa-calendar-alt"></i> Events</a>
+    </div>
+    <div class="nav-right">
+		<a href="/home/teacher_profile" class="profile">
+		  <i class="fas fa-user-circle"></i> <span th:text="${current_teacher.name}">Teacher</span>
+		</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="card">
+    <p th:if="${success}" th:text="${success}" class="text-success" style="color: green; text-align: center;"></p>
+	 <p th:if="${error}" th:text="${error}" class="text-danger" style="color: red; text-align: center;"></p>
+      <h3>Enter Marks for the Whole Class</h3>
+	  <form th:action="@{/home/grade_class_loader}" th:object="${gradeDto}" method="get">
+		  <select name="className" th:field="*{className}" required>
+		    <option th:value="${teacher_tt.period1}" th:text="${teacher_tt.period1}"></option>
+		    <option th:value="${teacher_tt.period2}" th:text="${teacher_tt.period2}"></option>
+		    <option th:value="${teacher_tt.period3}" th:text="${teacher_tt.period3}"></option>
+		    <option th:value="${teacher_tt.period4}" th:text="${teacher_tt.period4}"></option>
+		    <option th:value="${teacher_tt.period5}" th:text="${teacher_tt.period5}"></option>	    
+		  </select>
+		
+		  <input type="text" id="examInput" name="examName" th:field="*{exam}" placeholder="Enter exam name" required />
+		
+		  <button type="submit">Load Students</button>
+		</form>
+
+    </div>
+
+    <div class="card" th:if="${studentList != null}">
+		  <form th:action="@{/home/submitMarks}" method="post" th:object="${gradeDto}">
+		    <input type="hidden" name="className" th:value="${selectedClass}" />
+		    <input type="hidden" name="examName" th:value="${selectedExam}" />
+		    <input type="hidden" name="teacherSubject" th:value="${teacherSubject}" />
+		
+		    <table>
+		      <thead>
+		        <tr>
+		          <th>Student Name</th>
+		          <th th:text="${teacherSubject} + ' Marks'">Marks</th>
+		        </tr>
+		      </thead>
+		      <tbody>
+		        <tr th:each="student : ${studentList}">
+		          <td>
+		            <span th:text="${student.name}">Student Name</span>
+		          </td>
+		          <td>
+		            <input 
+		              type="number" 
+		              min="0" max="100" 
+		              th:name="${teacherSubject.toLowerCase() + '_' + student.rollno}" 
+		              required />
+		          </td>
+		        </tr>
+		      </tbody>
+		    </table>
+		    <button type="submit">Submit All Marks</button>
+		  </form>
+	</div>
+
+  </div>
+</body>
+</html>

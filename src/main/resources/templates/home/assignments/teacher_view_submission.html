@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	  <meta charset="UTF-8" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	  <title>Student Submission</title>
+	  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+	  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+	  <style>
+	    * {
+	      margin: 0;
+	      padding: 0;
+	      box-sizing: border-box;
+	    }
+	
+	    body {
+	      font-family: 'Poppins', sans-serif;
+	      background-color: #f5f7fa;
+	      padding-top: 0; /* Removed padding */
+	    }
+	
+	
+	
+	    nav {
+	      position: fixed;
+	      top: 0;
+	      left: 0;
+	      width: 100%;
+	      background: linear-gradient(to right, #8e2de2, #4a00e0);
+	      padding: 18px 40px;
+	      display: flex;
+	      justify-content: space-between;
+	      align-items: center;
+	      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	      z-index: 1000;
+	      flex-wrap: wrap;
+	    }
+	
+	    .nav-left {
+	      display: flex;
+	      align-items: center;
+	      gap: 25px;
+	      flex-wrap: wrap;
+	    }
+	
+	    .nav-left a {
+	      color: #fff;
+	      text-decoration: none;
+	      font-weight: 500;
+	      font-size: 15px;
+	      padding: 8px 12px;
+	      border-radius: 6px;
+	      display: flex;
+	      align-items: center;
+	      gap: 6px;
+	      transition: background 0.3s;
+	    }
+	
+	    .nav-left a:hover {
+	      background-color: rgba(255, 255, 255, 0.15);
+	    }
+	
+	    .nav-right {
+	      display: flex;
+	      align-items: center;
+	    }
+	
+	    .profile {
+	      background-color: #fff;
+	      color: #4a00e0;
+	      padding: 10px 18px;
+	      border-radius: 30px;
+	      font-weight: 600;
+	      text-decoration: none;
+	    }
+	
+	    .container {
+	      max-width: 800px;
+	      margin: 10% auto 10%; 
+	      background: #fff;
+	      padding: 40px;
+	      border-radius: 15px;
+	      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+	    }
+	
+	
+	    h2 {
+	      color: #4a00e0;
+	      margin-bottom: 25px;
+	      font-size: 24px;
+	    }
+	
+	    .detail-row {
+	      margin-bottom: 18px;
+	    }
+	
+	    .label {
+	      font-weight: 600;
+	      color: #333;
+	    }
+	
+	    .value {
+	      margin-top: 4px;
+	      color: #555;
+	    }
+	    .download-link {
+	      display: inline-block;
+	      margin-top: 12px;
+	      background-color: #4a00e0;
+	      color: #fff;
+	      padding: 10px 16px;
+	      border-radius: 6px;
+	      text-decoration: none;
+	      transition: 0.3s ease;
+	      cursor: pointer; /* <-- added line */
+	    }
+	
+	    .download-link:hover {
+	      background-color: #3600b3;
+	    }
+	
+	    @media (max-width: 768px) {
+	      nav {
+	        flex-direction: column;
+	        align-items: flex-start;
+	      }
+	
+	      .nav-left {
+	        margin-bottom: 10px;
+	      }
+	
+	      .container {
+	        margin: 120px 20px 40px;
+	        padding: 30px;
+	      }
+	    }
+	  </style>
+	</head>
+	<body>
+		  <nav>
+		    <div class="nav-left">
+		      <a href="/home/teacher_home"><i class="fas fa-home"></i> Dashboard</a>
+		      <a href="/home/teacher_class"><i class="fas fa-users"></i> Manage Class</a>
+		      <a href="/home/assignments/teacher_assignments_details"><i class="fas fa-book"></i> Assignments</a>
+		      <a href="/home/teacher_project"><i class="fas fa-tasks"></i> Projects</a>
+		      <a href="/home/teacher_grade"><i class="fas fa-graduation-cap"></i> Student Grades</a>
+		      <a href="/home/teacher_events"><i class="fas fa-calendar-alt"></i> Events</a>
+		    </div>
+		    <div class="nav-right">
+				<a href="/home/teacher_profile" class="profile">
+				  <i class="fas fa-user-circle"></i> <span th:text="${current_teacher.name}">Teacher</span>
+				</a>
+		    </div>
+		  </nav>
+		   <p th:if="${success}" th:text="${success}" class="text-success" style="color: green; text-align: center;"></p>
+			<p th:if="${error}" th:text="${error}" class="text-danger" style="color: red; text-align: center;"></p>
+	
+		  <div class="container">
+		    <h2>Student Submission</h2>
+		
+		    <div class="detail-row">
+		      <div class="label">Student Name:</div>
+		      <div class="value" th:text="${submission.studentName}"></div>
+		    </div>
+		
+		    <div class="detail-row">
+		      <div class="label">Class:</div>
+		      <div class="value" th:text="${submission.className}"></div>
+		    </div>
+		
+		    <div class="detail-row">
+		      <div class="label">Assignment Name:</div>
+		      <div class="value" th:text="${submission.assignmentName}"></div>
+		    </div>
+		
+		    <div class="detail-row">
+		      <div class="label">Submitted On:</div>
+		      <div class="value" >2025-06-03</div>
+		    </div>
+		
+		    <div class="detail-row">
+		      <div class="label">Submission Description:</div>
+		      <div class="value" th:text="${assignment.assignmentDescription}">
+		        Completed all exercises in notebook. Uploaded scanned PDF of work.
+		      </div>
+		    </div>
+		
+			<div class="detail-row" th:if="${submission.fileName != null}">
+			  <div class="label">Submitted File:</div>
+			
+				<a th:href="@{'/home/assignments/send-email/' + ${submission.id}}"
+				   style="display: inline-block; padding: 8px 16px; background-color: #1e3c72; color: white; border-radius: 5px; text-decoration: none; font-weight: bold; cursor: pointer;">
+				   📩 Send File to Teacher
+				</a>
+
+
+			</div>
+
+
+		  </div>
+	
+	</body>
+</html>

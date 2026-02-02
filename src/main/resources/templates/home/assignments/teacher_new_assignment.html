@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Assignment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    /* Same styling as before */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f7fa;
+      padding-top: 80px;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(to right, #8e2de2, #4a00e0);
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .nav-left a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.3s;
+    }
+
+    .nav-left a:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .profile {
+      background-color: #fff;
+      color: #4a00e0;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+
+    .profile:hover {
+      background-color: #4a00e0;
+      color: #fff;
+    }
+
+    .container {
+      padding: 40px 30px;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 25px 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .card h3 {
+      color: #4a00e0;
+      margin-bottom: 20px;
+    }
+
+    form label {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 5px;
+      margin-top: 15px;
+      color: #333;
+    }
+
+    form input, form textarea, form select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    form button {
+      margin-top: 20px;
+      background-color: #4a00e0;
+      color: #fff;
+      border: none;
+      padding: 12px 18px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    form button:hover {
+      background-color: #3500b3;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+      }
+
+      .nav-left {
+        gap: 15px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+      }
+
+      .profile {
+        margin-top: 10px;
+      }
+
+      .card {
+        margin: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-left">
+      <a href="/home/teacher_home"><i class="fas fa-home"></i> Dashboard</a>
+      <a href="/home/teacher_class"><i class="fas fa-users"></i> Manage Class</a>
+      <a href="/home/assignments/teacher_assignments_details"><i class="fas fa-book"></i> Assignments</a>
+      <a href="/home/teacher_project"><i class="fas fa-tasks"></i> Projects</a>
+      <a href="/home/teacher_grade"><i class="fas fa-graduation-cap"></i> Student Grades</a>
+      <a href="/home/teacher_events"><i class="fas fa-calendar-alt"></i> Events</a>
+    </div>
+    <div class="nav-right">
+		<a href="/home/teacher_profile" class="profile">
+		  <i class="fas fa-user-circle"></i> <span th:text="${current_teacher.name}">Teacher</span>
+		</a>
+    </div>
+  </nav>
+   <p th:if="${success}" th:text="${success}" class="text-success" style="color: green; text-align: center;"></p>
+	<p th:if="${error}" th:text="${error}" class="text-danger" style="color: red; text-align: center;"></p>
+  
+
+  <div class="container">
+    <div class="card">
+      <h3>Add New Assignment</h3>
+		<form th:action="@{/home/assignments/teacher_new_assignment}" method="post" th:object="${assignmentDto}">
+		
+		  <label for="className">Class Name</label>
+		  <select id="className" name="className" th:field="*{className}" required>
+		    <option th:value="${teacher_class.period1}" th:text="${teacher_class.period1}"></option>
+		    <option th:value="${teacher_class.period2}" th:text="${teacher_class.period2}"></option>
+		    <option th:value="${teacher_class.period3}" th:text="${teacher_class.period3}"></option>
+		    <option th:value="${teacher_class.period4}" th:text="${teacher_class.period4}"></option>
+		    <option th:value="${teacher_class.period5}" th:text="${teacher_class.period5}"></option>
+		  </select>
+		
+		  <label for="teacherEmail">Email</label>
+		  <input type="text" id="teacherEmail" name="teacherEmail" placeholder="Enter Email" th:field="*{teacherEmail}" required>
+		  <label for="assignmentName">Assignment Name</label>
+		  <input type="text" id="assignmentName" name="assignmentName" placeholder="Enter assignment name" th:field="*{assignmentName}" required>
+		
+		  <label for="description">Description</label>
+		  <textarea id="description" name="description" rows="4" placeholder="Enter assignment details" th:field="*{assignmentDescription}" required></textarea>
+		
+		  <label for="endDate">End Date</label>
+		  <input type="date" id="endDate" name="endDate" th:field="*{enddate}" required>
+		
+		  <button type="submit">
+		    <i class="fas fa-plus-circle"></i> Submit Assignment
+		  </button>
+		</form>
+
+
+    </div>
+  </div>
+  
+
+</body>
+</html>
+
